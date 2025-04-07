@@ -19,7 +19,7 @@ services:
 
 
   postgres:
-    image: ${POSTGRES_VERSION:-postgres:12-alpine}
+    image: ${POSTGRES_VERSION:-postgres:17-alpine}
     container_name: indexer_db
     restart: always
     networks:
@@ -173,3 +173,16 @@ services:
       - 4001:4001/udp
       - 127.0.0.1:5001:5001
       - 127.0.0.1:8080:8080
+
+  subquery-indexer-rpc-gateway:
+    image: web3cdn/subquery-indexer-rpc-gateway:latest
+    container_name: subquery-indexer-rpc-gateway
+    restart: always
+    ports:
+      - 8081:8081
+    volumes:
+      - ./src/subquery-indexer-rpc-gateway/config.yaml:/app/config.yaml
+    networks:
+      indexer_services:
+      subquery_indexer:
+        ipv4_address: ${DOCKER_SUBNET_PREFIX}.51

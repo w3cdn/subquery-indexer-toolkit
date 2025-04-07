@@ -1,4 +1,4 @@
-FROM golang:1.20.6 as builder
+FROM golang:alpine as builder
 
 # Create and change to the app directory.
 WORKDIR /app
@@ -18,7 +18,7 @@ COPY . ./
 # Build the binary.
 RUN go build -v -o server
 
-FROM ubuntu:23.10
+FROM ubuntu:24.04
 RUN set -x && apt-get update && apt-get install -y \
     ca-certificates bash curl bc jq nodejs npm && npm -g install axios  bignumber.js lodash fetch && \
     rm -rf /var/lib/apt/lists/*
